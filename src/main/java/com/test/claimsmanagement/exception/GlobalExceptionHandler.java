@@ -9,6 +9,12 @@ import org.springframework.web.context.request.WebRequest;
 import java.time.LocalDateTime;
 
 public class GlobalExceptionHandler {
+    public ResponseEntity<ErrorResponseDto> handleResourceNotFoundException(ResourceNotFoundException exception, WebRequest webRequest) {
+        ErrorResponseDto errorResponseDto = new ErrorResponseDto(webRequest.getDescription(false),
+                HttpStatus.NOT_FOUND, exception.getMessage(), LocalDateTime.now());
+        return new ResponseEntity<>(errorResponseDto, HttpStatus.NOT_FOUND);
+    }
+
     @ExceptionHandler(MemberAlreadyExistsException.class)
     public ResponseEntity<ErrorResponseDto> handleMemberAlreadyExistsException(MemberAlreadyExistsException exception, WebRequest webRequest) {
         ErrorResponseDto errorResponseDto = new ErrorResponseDto(webRequest.getDescription(false),

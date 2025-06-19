@@ -5,7 +5,7 @@ import lombok.Data;
 
 import java.time.LocalDate;
 
-@Data@AllArgsConstructor
+@Data
 public class PolicyDto {
     private Long policyId;
     private String policyName;

@@ -18,6 +18,7 @@ public class MemberDetailsDto {
     private String memberAddress;
     private String memberResidence;
     private String memberCity;
+    private PolicyDto policyDto;
 
 
 

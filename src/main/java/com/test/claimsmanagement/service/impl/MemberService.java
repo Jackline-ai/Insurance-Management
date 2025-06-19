@@ -1,9 +1,12 @@
 package com.test.claimsmanagement.service.impl;
 
 import com.test.claimsmanagement.ClaimsDto.MemberDetailsDto;
+import com.test.claimsmanagement.ClaimsDto.PolicyDto;
 import com.test.claimsmanagement.ClaimsMapper.MemberDetailsMapper;
+import com.test.claimsmanagement.ClaimsMapper.PolicyMapper;
 import com.test.claimsmanagement.constants.ClaimsConstants;
 import com.test.claimsmanagement.exception.MemberAlreadyExistsException;
+import com.test.claimsmanagement.exception.ResourceNotFoundException;
 import com.test.claimsmanagement.model.MemberDetails;
 import com.test.claimsmanagement.model.PolicyDetails;
 import com.test.claimsmanagement.repository.MemberRepository;
@@ -46,7 +49,14 @@ public class MemberService implements IPolicyService {
     }
 
     @Override
-    public void fetchPolicyDetails(String phoneNumber) {
+    public MemberDetailsDto fetchPolicyDetails(String phoneNumber) {
+        MemberDetails member = memberRepository.findByPhoneNumber(phoneNumber).orElseThrow(() -> new ResourceNotFoundException("MemberDetails", "phoneNumber", phoneNumber));
+        PolicyDetails policy = policyRepository.findByMemberId(member.getMemberId())
+                .orElseThrow(() -> new ResourceNotFoundException("PolicyDetails", "memberId", member.getMemberId().toString()));
+        MemberDetailsDto memberDetailsDto = MemberDetailsMapper.mapsToMemberDetailsDto(member, new MemberDetailsDto());
+        memberDetailsDto.setPolicyDto(PolicyMapper.mapsPolicyDto(policy, new PolicyDto()));
+        return memberDetailsDto;
+
 
 
 

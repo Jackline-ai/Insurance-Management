@@ -18,7 +18,11 @@ public class PolicyController {
         memberService.createPolicy(memberDetailsDto);
         return ResponseEntity.status(HttpStatus.CREATED).body(new ResponseDto(ClaimsConstants.HTTP_CODE,ClaimsConstants.HTTP_MESSAGE ));
     }
+    @GetMapping("/retrieve")
+    public ResponseEntity<MemberDetailsDto> retrievePolicy(@RequestParam String phoneNumber){
+       MemberDetailsDto memberDetailsDto = memberService.fetchPolicyDetails(phoneNumber);
+        return ResponseEntity.status(HttpStatus.OK).body(memberDetailsDto);
 
-
+    }
 
 }
