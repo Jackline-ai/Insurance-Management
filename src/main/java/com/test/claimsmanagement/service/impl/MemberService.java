@@ -1,6 +1,7 @@
 package com.test.claimsmanagement.service.impl;
 
 import com.test.claimsmanagement.ClaimsDto.MemberDetailsDto;
+import com.test.claimsmanagement.ClaimsDto.MemberSearchCriteria;
 import com.test.claimsmanagement.ClaimsDto.PolicyDto;
 import com.test.claimsmanagement.ClaimsDto.PolicySearchCriteria;
 import com.test.claimsmanagement.ClaimsMapper.MemberDetailsMapper;
@@ -37,20 +38,21 @@ public class MemberService implements IPolicyService {
             throw new MemberAlreadyExistsException("Member with : " + memberDetailsDto.getPhoneNumber() + "already exists");
         }
         MemberDetails savedMemberDetails = memberRepository.save(memberDetails);
-        policyRepository.save(createNewPolicy(savedMemberDetails));
+        policyRepository.save(createNewPolicy(savedMemberDetails, memberDetailsDto.getPolicyDto()));
 
 
     }
 
 
-    private PolicyDetails createNewPolicy(MemberDetails memberDetails) {
+    private PolicyDetails createNewPolicy(MemberDetails memberDetails, PolicyDto policyDto) {
         PolicyDetails newPolicy = new PolicyDetails();
         newPolicy.setMemberId(memberDetails.getMemberId());
-        newPolicy.setPolicyType(newPolicy.getPolicyType());
-        newPolicy.setPolicyName(newPolicy.getPolicyName());
-        newPolicy.setInsurer(newPolicy.getInsurer());
-        newPolicy.setStatus(newPolicy.getStatus());
-        newPolicy.setPremiumAmount(newPolicy.getPremiumAmount());
+        newPolicy.setPolicyType(policyDto.getPolicyType());
+        newPolicy.setPolicyName(policyDto.getPolicyName());
+        newPolicy.setInsurer(policyDto.getInsurer());
+        newPolicy.setStatus(policyDto.getStatus());
+        newPolicy.setPremiumAmount(policyDto.getPremiumAmount());
+
         return newPolicy;
 
     }
@@ -90,7 +92,7 @@ public class MemberService implements IPolicyService {
     public boolean deletePolicy(String phoneNumber) {
         MemberDetails memberDetails = memberRepository.findByPhoneNumber(phoneNumber)
                 .orElseThrow(() -> new ResourceNotFoundException("MemberDetails", "phoneNumber", phoneNumber));
-         policyRepository.deleteByMemberId(memberDetails.getMemberId());
+        policyRepository.deleteByMemberId(memberDetails.getMemberId());
         memberRepository.deleteById(memberDetails.getMemberId());
         return true;
     }
@@ -98,19 +100,20 @@ public class MemberService implements IPolicyService {
 
     @Override
     public List<PolicyDto> findInactivePolicies(Long memberId, String status) {
-       List<PolicyDetails> policies = policyRepository.findByStatus(status);
+        List<PolicyDetails> policies = policyRepository.findByStatus(status);
 
-       List<PolicyDetails> filteredMembers = policies.stream()
+        List<PolicyDetails> filteredMembers = policies.stream()
                 .filter(policy -> policy.getMemberId().equals(memberId))
                 .toList();
-       if(filteredMembers.isEmpty()){
-       throw new ResourceNotFoundException("PolicyDetails", "memberId", memberId.toString());
-       }
-         return filteredMembers.stream()
-                 .map(policy -> PolicyMapper.mapsPolicyDto(policy, new PolicyDto()))
-                 .collect(Collectors.toList());
+        if (filteredMembers.isEmpty()) {
+            throw new ResourceNotFoundException("PolicyDetails", "memberId", memberId.toString());
+        }
+        return filteredMembers.stream()
+                .map(policy -> PolicyMapper.mapsPolicyDto(policy, new PolicyDto()))
+                .collect(Collectors.toList());
 
     }
+
     @Override
     public Page<PolicyDto> findPolicies(PolicySearchCriteria criteria, Pageable pageable) {
         Page<PolicyDetails> policyDetailsPage = policyRepository.searchPolicies(criteria, pageable);
@@ -126,7 +129,23 @@ public class MemberService implements IPolicyService {
 
         return new PageImpl<>(dtoList, pageable, policyDetailsPage.getTotalElements());
     }
-    }
+    @Override
+    public Page<MemberDetailsDto> findMembers(MemberSearchCriteria memberSearch, Pageable pageable) {
+        Page<MemberDetails> newMemberPage = memberRepository.searchMembers(memberSearch, pageable);
+        if (newMemberPage.isEmpty()) {
+            throw new ResourceNotFoundException("MemberDetails", "memberSearch", memberSearch.toString());
+        }
+            List<MemberDetailsDto> memberDetailsDtoList = newMemberPage.getContent()
+                    .stream()
+                    .map(member -> MemberDetailsMapper.mapsToMemberDetailsDto(member, new MemberDetailsDto()))
+                    .toList();
+
+            return new PageImpl<>(memberDetailsDtoList, pageable, newMemberPage.getTotalElements());
+
+        }
+
+
+}
 
 
 

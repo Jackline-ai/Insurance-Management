@@ -14,6 +14,7 @@ public class MemberDetailsMapper {
         memberDetailsDto.setPhoneNumber(memberInfo.getPhoneNumber());
         memberDetailsDto.setGender(memberInfo.getGender());
         memberDetailsDto.setEmail(memberInfo.getEmail());
+        memberDetailsDto.setMemberResidence(memberInfo.getMemberResidence());
         memberDetailsDto.setRelationshipStatus(memberInfo.getRelationshipStatus());
         return memberDetailsDto;
 
@@ -29,6 +30,7 @@ public class MemberDetailsMapper {
         memberInfo.setGender(memberDetailsDto.getGender());
         memberInfo.setEmail(memberDetailsDto.getEmail());
         memberInfo.setRelationshipStatus(memberDetailsDto.getRelationshipStatus());
+        memberInfo.setMemberResidence(memberDetailsDto.getMemberResidence());
         return memberInfo;
 
     }

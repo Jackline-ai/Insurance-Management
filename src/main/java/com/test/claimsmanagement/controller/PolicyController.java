@@ -86,7 +86,7 @@ public class PolicyController {
         }
     }
 
-    @Operation(summary = "Get In Active Policies", description = "Retrieve all In active policies for a given member")
+    @Operation(summary = "Get Inactive Policies", description = "Retrieve all Inactive policies for a given member")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "Policies retrieved successfully")
     })

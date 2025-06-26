@@ -3,8 +3,12 @@ package com.test.claimsmanagement.repository.custom;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import com.test.claimsmanagement.ClaimsDto.MemberDetailsDto;
+import com.test.claimsmanagement.ClaimsDto.MemberSearchCriteria;
 import com.test.claimsmanagement.ClaimsDto.PolicySearchCriteria;
+import com.test.claimsmanagement.model.MemberDetails;
 import com.test.claimsmanagement.model.PolicyDetails;
+import com.test.claimsmanagement.model.QMemberDetails;
 import com.test.claimsmanagement.model.QPolicyDetails;
 import com.test.claimsmanagement.utils.GenericQuerydslFilterBuilder;
 import lombok.RequiredArgsConstructor;
@@ -48,5 +52,7 @@ public class PolicyDetailsCustomRepositoryImpl implements PolicyDetailsCustomRep
 
         return new PageImpl<>(result, pageable, total);
     }
+
+
 
 }

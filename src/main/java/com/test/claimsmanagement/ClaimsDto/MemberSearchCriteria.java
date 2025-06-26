@@ -40,9 +40,11 @@ public class MemberSearchCriteria {
     @QueryField(comparison = QueryField.Comparison.CONTAINS)
     private String memberCity;
 
-    @QueryField(qField = "startDate", comparison = QueryField.Comparison.GREATER_THAN)
-    private LocalDate startFrom;
+    @QueryField(qField = "bornAfter", comparison = QueryField.Comparison.LESS_THAN)
+    private LocalDate bornBefore;
 
-    @QueryField(qField = "endDate", comparison = QueryField.Comparison.LESS_THAN)
-    private LocalDate endBefore;
+    @QueryField(qField = "bornBefore", comparison = QueryField.Comparison.GREATER_THAN)
+    private LocalDate bornAfter ;
+
+
 }

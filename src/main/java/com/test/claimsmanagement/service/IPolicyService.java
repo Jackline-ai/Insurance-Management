@@ -1,6 +1,7 @@
 package com.test.claimsmanagement.service;
 
 import com.test.claimsmanagement.ClaimsDto.MemberDetailsDto;
+import com.test.claimsmanagement.ClaimsDto.MemberSearchCriteria;
 import com.test.claimsmanagement.ClaimsDto.PolicyDto;
 import com.test.claimsmanagement.ClaimsDto.PolicySearchCriteria;
 import com.test.claimsmanagement.model.PolicyDetails;
@@ -20,6 +21,7 @@ public interface IPolicyService {
    List <PolicyDto> findInactivePolicies(Long memberId, String status);
 
     Page<PolicyDto> findPolicies(PolicySearchCriteria criteria, Pageable pageable);
+    Page<MemberDetailsDto> findMembers(MemberSearchCriteria memberSearch, Pageable pageable);
 }
 
 
