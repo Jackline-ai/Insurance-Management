@@ -25,12 +25,11 @@ public class PolicyDetailsCustomRepositoryImpl implements PolicyDetailsCustomRep
     private final GenericQuerydslFilterBuilder filterBuilder;
 
     @Override
-    public List<PolicyDetails> findByMemberIdAndStatus(Long memberId, String status) {
+    public List<PolicyDetails> findByStatus( String status) {
         QPolicyDetails qPolicy = QPolicyDetails.policyDetails;
         List<PolicyDetails> policies = jpaQueryFactory
                 .selectFrom(qPolicy)
-                .where(qPolicy.status.eq(status)
-                        .and(qPolicy.memberId.eq(memberId)))
+                .where(qPolicy.status.eq(status))
                 .fetch();
         return policies;
     }

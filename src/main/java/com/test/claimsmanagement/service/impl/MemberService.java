@@ -23,8 +23,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-@Service
-@AllArgsConstructor
+@Service@AllArgsConstructor
 public class MemberService implements IPolicyService {
     private MemberRepository memberRepository;
     private PolicyRepository policyRepository;
@@ -91,22 +90,25 @@ public class MemberService implements IPolicyService {
     public boolean deletePolicy(String phoneNumber) {
         MemberDetails memberDetails = memberRepository.findByPhoneNumber(phoneNumber)
                 .orElseThrow(() -> new ResourceNotFoundException("MemberDetails", "phoneNumber", phoneNumber));
-        policyRepository.deleteByMemberId(memberDetails.getMemberId());
+         policyRepository.deleteByMemberId(memberDetails.getMemberId());
         memberRepository.deleteById(memberDetails.getMemberId());
         return true;
     }
 
+
     @Override
-    public List<PolicyDto> findInactivePoliciesByMemberId(Long memberId) {
-        List<PolicyDetails> activePolicies = policyRepository.findByMemberIdAndStatus(memberId, "Inactive");
-        if (activePolicies.isEmpty()) {
-            throw new ResourceNotFoundException("PolicyDetails", "memberId", memberId.toString());
-        }
+    public List<PolicyDto> findInactivePolicies(Long memberId, String status) {
+       List<PolicyDetails> policies = policyRepository.findByStatus(status);
 
-        return activePolicies.stream()
-                .map(policy -> PolicyMapper.mapsPolicyDto(policy, new PolicyDto()))
-                .collect(Collectors.toList());
-
+       List<PolicyDetails> filteredMembers = policies.stream()
+                .filter(policy -> policy.getMemberId().equals(memberId))
+                .toList();
+       if(filteredMembers.isEmpty()){
+       throw new ResourceNotFoundException("PolicyDetails", "memberId", memberId.toString());
+       }
+         return filteredMembers.stream()
+                 .map(policy -> PolicyMapper.mapsPolicyDto(policy, new PolicyDto()))
+                 .collect(Collectors.toList());
 
     }
     @Override
@@ -124,9 +126,11 @@ public class MemberService implements IPolicyService {
 
         return new PageImpl<>(dtoList, pageable, policyDetailsPage.getTotalElements());
     }
+    }
 
 
-}
+
+
 
 
 

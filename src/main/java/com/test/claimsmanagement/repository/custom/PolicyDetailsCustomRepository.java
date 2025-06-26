@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface PolicyDetailsCustomRepository {
-    List<PolicyDetails> findByMemberIdAndStatus(Long memberId, String status);
+    List <PolicyDetails> findByStatus(String status);
 
     Page<PolicyDetails> searchPolicies(PolicySearchCriteria criteria, Pageable pageable);
 

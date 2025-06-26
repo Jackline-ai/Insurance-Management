@@ -17,7 +17,7 @@ public interface IPolicyService {
     boolean updatePolicyDetails(MemberDetailsDto memberDetailsDto);
 
     boolean deletePolicy(String phoneNumber);
-   List<PolicyDto> findInactivePoliciesByMemberId(Long memberId);
+   List <PolicyDto> findInactivePolicies(Long memberId, String status);
 
     Page<PolicyDto> findPolicies(PolicySearchCriteria criteria, Pageable pageable);
 }

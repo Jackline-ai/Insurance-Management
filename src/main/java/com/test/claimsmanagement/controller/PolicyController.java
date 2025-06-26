@@ -86,14 +86,14 @@ public class PolicyController {
         }
     }
 
-    @Operation(summary = "Get Active Policies", description = "Retrieve all active policies for a given member")
+    @Operation(summary = "Get In Active Policies", description = "Retrieve all In active policies for a given member")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "Policies retrieved successfully")
     })
-    @GetMapping("/activePolicies/{memberId}")
-    public ResponseEntity<List<PolicyDto>> getInactivePolicies(@PathVariable Long memberId) {
-        List<PolicyDto> activePolicies = memberService.findInactivePoliciesByMemberId(memberId);
-        return ResponseEntity.ok(activePolicies);
+    @GetMapping("/InactivePolicies")
+    public ResponseEntity<List<PolicyDto>> getInactivePolicies(@RequestParam Long memberId, @RequestParam String status) {
+        List<PolicyDto> InactivePolicies = memberService.findInactivePolicies(memberId,status);
+        return ResponseEntity.ok(InactivePolicies);
     }
 
     @Operation(summary = "Search Policies", description = "Search for policies using various filters")
