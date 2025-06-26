@@ -4,8 +4,8 @@ spring:
 
   datasource:
     url: jdbc:mysql://localhost:3306/insurance
-    username: developer
-    password: Nac@020/16
+    username: root
+    password: 1234
 
   jpa:
     hibernate:
