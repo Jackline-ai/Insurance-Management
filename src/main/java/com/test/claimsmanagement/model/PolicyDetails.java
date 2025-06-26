@@ -3,11 +3,16 @@ package com.test.claimsmanagement.model;
 import jakarta.persistence.*;
 import lombok.*;
 
+
 import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
 
-@AllArgsConstructor@NoArgsConstructor@Getter@Setter@ToString
+@AllArgsConstructor
+@NoArgsConstructor
+@Getter
+@Setter
+@ToString
 @Entity
 @Table(name = "policy")
 public class PolicyDetails extends BaseEntity {

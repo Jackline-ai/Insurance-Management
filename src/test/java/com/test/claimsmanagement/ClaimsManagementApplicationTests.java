@@ -8,6 +8,7 @@ class ClaimsManagementApplicationTests {
 
     @Test
     void contextLoads() {
+
     }
 
 }

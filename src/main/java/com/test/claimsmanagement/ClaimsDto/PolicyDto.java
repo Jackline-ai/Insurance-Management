@@ -1,12 +1,13 @@
 package com.test.claimsmanagement.ClaimsDto;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.*;
 
 import java.time.LocalDate;
 
+
 @Data
 public class PolicyDto {
+
     private Long policyId;
     private String policyName;
     private String insurer;
