@@ -2,7 +2,10 @@ package com.test.claimsmanagement.service;
 
 import com.test.claimsmanagement.ClaimsDto.MemberDetailsDto;
 import com.test.claimsmanagement.ClaimsDto.PolicyDto;
+import com.test.claimsmanagement.ClaimsDto.PolicySearchCriteria;
 import com.test.claimsmanagement.model.PolicyDetails;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 
@@ -15,6 +18,8 @@ public interface IPolicyService {
 
     boolean deletePolicy(String phoneNumber);
    List<PolicyDto> findInactivePoliciesByMemberId(Long memberId);
+
+    Page<PolicyDto> findPolicies(PolicySearchCriteria criteria, Pageable pageable);
 }
 
 

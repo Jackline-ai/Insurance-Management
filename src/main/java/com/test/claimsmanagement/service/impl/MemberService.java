@@ -2,6 +2,7 @@ package com.test.claimsmanagement.service.impl;
 
 import com.test.claimsmanagement.ClaimsDto.MemberDetailsDto;
 import com.test.claimsmanagement.ClaimsDto.PolicyDto;
+import com.test.claimsmanagement.ClaimsDto.PolicySearchCriteria;
 import com.test.claimsmanagement.ClaimsMapper.MemberDetailsMapper;
 import com.test.claimsmanagement.ClaimsMapper.PolicyMapper;
 import com.test.claimsmanagement.constants.ClaimsConstants;
@@ -13,13 +14,17 @@ import com.test.claimsmanagement.repository.MemberRepository;
 import com.test.claimsmanagement.repository.PolicyRepository;
 import com.test.claimsmanagement.service.IPolicyService;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-@Service@AllArgsConstructor
+@Service
+@AllArgsConstructor
 public class MemberService implements IPolicyService {
     private MemberRepository memberRepository;
     private PolicyRepository policyRepository;
@@ -86,14 +91,14 @@ public class MemberService implements IPolicyService {
     public boolean deletePolicy(String phoneNumber) {
         MemberDetails memberDetails = memberRepository.findByPhoneNumber(phoneNumber)
                 .orElseThrow(() -> new ResourceNotFoundException("MemberDetails", "phoneNumber", phoneNumber));
-         policyRepository.deleteByMemberId(memberDetails.getMemberId());
+        policyRepository.deleteByMemberId(memberDetails.getMemberId());
         memberRepository.deleteById(memberDetails.getMemberId());
         return true;
     }
 
     @Override
     public List<PolicyDto> findInactivePoliciesByMemberId(Long memberId) {
-        List<PolicyDetails> activePolicies = policyRepository.findByMemberIdAndStatus(memberId , "Inactive");
+        List<PolicyDetails> activePolicies = policyRepository.findByMemberIdAndStatus(memberId, "Inactive");
         if (activePolicies.isEmpty()) {
             throw new ResourceNotFoundException("PolicyDetails", "memberId", memberId.toString());
         }
@@ -103,7 +108,21 @@ public class MemberService implements IPolicyService {
                 .collect(Collectors.toList());
 
 
+    }
+    @Override
+    public Page<PolicyDto> findPolicies(PolicySearchCriteria criteria, Pageable pageable) {
+        Page<PolicyDetails> policyDetailsPage = policyRepository.searchPolicies(criteria, pageable);
 
+        if (policyDetailsPage.isEmpty()) {
+            throw new ResourceNotFoundException("Policies", "Generic search", criteria.toString());
+        }
+
+        List<PolicyDto> dtoList = policyDetailsPage.getContent()
+                .stream()
+                .map(policy -> PolicyMapper.mapsPolicyDto(policy, new PolicyDto()))
+                .toList();
+
+        return new PageImpl<>(dtoList, pageable, policyDetailsPage.getTotalElements());
     }
 
 
