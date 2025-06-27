@@ -110,7 +110,7 @@ public class PolicyController {
             @RequestParam(required = false) String status,
             @RequestParam(required = false) Long memberId,
             @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startFrom,
-            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endBefore,
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate upTo,
             @RequestParam(required = false, defaultValue = "0") Integer page,
             @RequestParam(required = false, defaultValue = "10") Integer size,
             @RequestParam(required = false, defaultValue = "policyId") String sortBy,
@@ -128,7 +128,7 @@ public class PolicyController {
         criteria.setStatus(status);
         criteria.setMemberId(memberId);
         criteria.setStartFrom(startFrom);
-        criteria.setEndBefore(endBefore);
+        criteria.setUpTo(upTo);
 
         Page<PolicyDto> result = memberService.findPolicies(criteria, pageable);
         return ResponseEntity.ok(result);
