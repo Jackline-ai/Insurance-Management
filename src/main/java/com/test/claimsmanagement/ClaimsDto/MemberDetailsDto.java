@@ -9,7 +9,7 @@ import java.time.LocalDate;
 public class MemberDetailsDto {
     private Long memberId;
     private String fullName;
-    private String dateOfBirth;
+    private LocalDate dateOfBirth;
     private String nationalId;
     private String phoneNumber;
     private String email;

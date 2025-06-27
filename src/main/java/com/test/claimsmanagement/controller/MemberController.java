@@ -35,7 +35,7 @@ public class MemberController {
     public ResponseEntity<Page<MemberDetailsDto>> searchMembers(
             @RequestParam(required = false) Long memberId,
             @RequestParam(required = false) String fullName,
-            @RequestParam(required = false) String dateOfBirth,
+            @RequestParam(required = false) LocalDate dateOfBirth,
             @RequestParam(required = false) String nationalId,
             @RequestParam(required = false) String phoneNumber,
             @RequestParam(required = false) String email,
@@ -44,11 +44,11 @@ public class MemberController {
             @RequestParam(required = false) String memberAddress,
             @RequestParam(required = false) String memberResidence,
             @RequestParam(required = false) String memberCity,
-            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate bornBefore,
-            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate bornAfter,
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dobFrom,
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dobTo,
             @RequestParam(required = false, defaultValue = "0") int page,
-            @RequestParam(required = false, defaultValue = "10") int size,
-            @RequestParam(required = false, defaultValue = "memberId") String sortBy,
+            @RequestParam(required = false, defaultValue = "5") int size,
+            @RequestParam(required = false, defaultValue = "fullName") String sortBy,
             @RequestParam(required = false, defaultValue = "asc") String sortDir) {
 
         Sort.Direction direction = sortDir.equalsIgnoreCase("asc") ? Sort.Direction.ASC : Sort.Direction.DESC;
@@ -66,8 +66,8 @@ public class MemberController {
         criteria.setMemberAddress(memberAddress);
         criteria.setMemberResidence(memberResidence);
         criteria.setMemberCity(memberCity);
-        criteria.setBornBefore(bornBefore);
-        criteria.setBornAfter(bornAfter);
+        criteria.setDobFrom(dobFrom);
+        criteria.setDobTo(dobTo);
 
         Page<MemberDetailsDto> searchResult = memberService.findMembers(criteria, pageable);
         return ResponseEntity.ok(searchResult);

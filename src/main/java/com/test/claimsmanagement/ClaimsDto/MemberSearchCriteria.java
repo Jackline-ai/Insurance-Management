@@ -13,8 +13,8 @@ public class MemberSearchCriteria {
     @QueryField(comparison = QueryField.Comparison.CONTAINS)
     private String fullName;
 
-    @QueryField(comparison = QueryField.Comparison.CONTAINS)
-    private String dateOfBirth;
+    @QueryField(comparison = QueryField.Comparison.EQUALS)
+    private LocalDate dateOfBirth;
 
     @QueryField(comparison = QueryField.Comparison.CONTAINS)
     private String nationalId;
@@ -40,11 +40,11 @@ public class MemberSearchCriteria {
     @QueryField(comparison = QueryField.Comparison.CONTAINS)
     private String memberCity;
 
-    @QueryField(qField = "bornAfter", comparison = QueryField.Comparison.LESS_THAN)
-    private LocalDate bornBefore;
+    @QueryField(qField = "dateOfBirth", comparison = QueryField.Comparison.GREATER_THAN_OR_EQUALS)
+    private LocalDate dobFrom;
 
-    @QueryField(qField = "bornBefore", comparison = QueryField.Comparison.GREATER_THAN)
-    private LocalDate bornAfter ;
+    @QueryField(qField = "dateOfBirth", comparison = QueryField.Comparison.LESS_THAN_OR_EQUALS)
+    private LocalDate dobTo;
 
 
 }

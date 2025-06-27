@@ -75,17 +75,16 @@ public class GenericQuerydslFilterBuilder {
                             logger.warn("CONTAINS is only applicable to StringPath. Got: {}", path.getClass().getSimpleName());
                         }
                     }
-                    case GREATER_THAN -> {
+                    case GREATER_THAN_OR_EQUALS -> {
                         if (path instanceof DatePath<?> dp && value instanceof Comparable<?>) {
-                            builder.and(((DatePath) dp).gt((Comparable) value));
+                            builder.and(((DatePath) dp).goe((Comparable) value));
                         }
                     }
-                    case LESS_THAN -> {
+                    case LESS_THAN_OR_EQUALS -> {
                         if (path instanceof DatePath<?> dp && value instanceof Comparable<?>) {
-                            builder.and(((DatePath) dp).lt((Comparable) value));
+                            builder.and(((DatePath) dp).loe((Comparable) value));
                         }
                     }
-                    default -> logger.warn("Unsupported path type for CONTAINS: {}", path.getClass().getSimpleName());
                 }
 
             } catch (IllegalAccessException e) {
@@ -94,6 +93,7 @@ public class GenericQuerydslFilterBuilder {
                 logger.error("Unexpected error while processing field '{}': {}", dtoField.getName(), ex.getMessage(), ex);
             }
         }
+
 
         return builder;
     }

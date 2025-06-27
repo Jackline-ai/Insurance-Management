@@ -13,7 +13,7 @@ public @interface QueryField {
     Comparison comparison() default Comparison.EQUALS;
 
     enum Comparison {
-        EQUALS, CONTAINS, GREATER_THAN, LESS_THAN
+        EQUALS, CONTAINS, GREATER_THAN, LESS_THAN, GREATER_THAN_OR_EQUALS, LESS_THAN_OR_EQUALS,BETWEEN
     }
 
 }

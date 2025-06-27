@@ -13,7 +13,7 @@ public class MemberDetails extends BaseEntity{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long memberId;
     private String fullName;
-    private String dateOfBirth;
+    private LocalDate dateOfBirth;
     private String nationalId;
     private String phoneNumber;
     private String email;
