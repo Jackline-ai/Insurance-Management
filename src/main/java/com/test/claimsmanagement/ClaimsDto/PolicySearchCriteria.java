@@ -45,7 +45,7 @@ public class PolicySearchCriteria {
     @Schema(description = "Filter policies that start after this date", example = "2024-01-01")
     private LocalDate startFrom;
 
-    @QueryField(qField = "endDate", comparison = QueryField.Comparison.LESS_THAN)
+    @QueryField(qField = "endDate", comparison = QueryField.Comparison.LESS_THAN_OR_EQUALS)
     @Schema(description = "Filter policies that end before this date", example = "2025-12-31")
-    private LocalDate endBefore;
+    private LocalDate upTo;
 }
