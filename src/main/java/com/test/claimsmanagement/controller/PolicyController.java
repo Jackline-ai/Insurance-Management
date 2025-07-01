@@ -12,6 +12,8 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -21,6 +23,7 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
@@ -29,6 +32,7 @@ import java.util.List;
 @Tag(name = "Policy Management APIs", description = "APIs for managing member policy operations")
 @RestController
 @AllArgsConstructor
+@Validated
 @RequestMapping("/api")
 public class PolicyController {
 
@@ -40,7 +44,7 @@ public class PolicyController {
             @ApiResponse(responseCode = "500", description = "Internal Server Error", content = @Content(schema = @Schema(implementation = ResponseDto.class)))
     })
     @PostMapping("/create")
-    public ResponseEntity<ResponseDto> createPolicy(@RequestBody MemberDetailsDto memberDetailsDto) {
+    public ResponseEntity<ResponseDto> createPolicy(@Valid @RequestBody MemberDetailsDto memberDetailsDto) {
         memberService.createPolicy(memberDetailsDto);
         return ResponseEntity.status(HttpStatus.CREATED).body(new ResponseDto(ClaimsConstants.STATUS_201, ClaimsConstants.HTTP_MESSAGE_201));
     }
@@ -51,7 +55,8 @@ public class PolicyController {
             @ApiResponse(responseCode = "404", description = "Policy not found")
     })
     @GetMapping("/retrieve")
-    public ResponseEntity<MemberDetailsDto> retrievePolicy(@RequestParam String phoneNumber) {
+    public ResponseEntity<MemberDetailsDto> retrievePolicy(@RequestParam @Pattern(regexp = "(^$|[0-9]{10})", message ="Phone number must be 10 digits " )
+                                                               String phoneNumber) {
         MemberDetailsDto memberDetailsDto = memberService.fetchPolicyDetails(phoneNumber);
         return ResponseEntity.status(HttpStatus.OK).body(memberDetailsDto);
     }
@@ -62,7 +67,7 @@ public class PolicyController {
             @ApiResponse(responseCode = "500", description = "Update failed")
     })
     @PutMapping("/update")
-    public ResponseEntity<ResponseDto> updatePolicyDetails(@RequestBody MemberDetailsDto memberDetailsDto) {
+    public ResponseEntity<ResponseDto> updatePolicyDetails(@Valid@RequestBody MemberDetailsDto memberDetailsDto) {
         boolean isUpdated = memberService.updatePolicyDetails(memberDetailsDto);
         if (isUpdated) {
             return ResponseEntity.status(HttpStatus.OK).body(new ResponseDto(ClaimsConstants.STATUS_200, ClaimsConstants.HTTP_MESSAGE_200));
@@ -77,7 +82,8 @@ public class PolicyController {
             @ApiResponse(responseCode = "500", description = "Delete failed")
     })
     @DeleteMapping("/delete")
-    public ResponseEntity<ResponseDto> deletePolicy(@RequestParam String phoneNumber) {
+    public ResponseEntity<ResponseDto> deletePolicy(@RequestParam @Pattern(regexp = "(^$|[0-9]{10})", message ="Phone number must be 10 digits " )
+                                                        String phoneNumber) {
         boolean isDeleted = memberService.deletePolicy(phoneNumber);
         if (isDeleted) {
             return ResponseEntity.status(HttpStatus.OK).body(new ResponseDto(ClaimsConstants.STATUS_200, ClaimsConstants.HTTP_MESSAGE_200));

@@ -3,14 +3,22 @@ spring:
     name: InsuranceManagement
 
   datasource:
-    url: jdbc:mysql://localhost:3306/insurance
+    url: jdbc:mysql://mysql:3306/insurance
     username: developer
     password: Nac@020/16
+    hikari:
+     connection-timeout: 30000
+     maximum-pool-size: 5
+     initialization-fail-timeout: 0
 
   jpa:
     hibernate:
       ddl-auto: update
     show-sql: true
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL8Dialect
+
 
 #  kafka:
 #    bootstrap-servers: localhost:9092
