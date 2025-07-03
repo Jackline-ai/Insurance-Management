@@ -2,6 +2,7 @@ package com.test.claimsmanagement.model;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 
 import java.time.LocalDate;
@@ -14,6 +15,7 @@ import java.util.Set;
 @Setter
 @ToString
 @Entity
+@EntityListeners(AuditingEntityListener.class)
 @Table(name = "policy")
 public class PolicyDetails extends BaseEntity {
     @Id

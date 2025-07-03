@@ -24,9 +24,11 @@ public class PolicyDto {
 
     private LocalDate startDate;
     private LocalDate endDate;
+
     @Column(nullable = false)
     @Min(value = 400, message = "The minimum premium amount is 400")
     private double premiumAmount;
+
     private String policyType;
     private String status;
     private Long memberId;
